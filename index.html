@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outcome Map (ODI) — Importância × Satisfação</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <header class="container" role="banner">
+    <h1>Outcome Map (ODI) — Importância × Satisfação (0–10)</h1>
+  </header>
+
+  <main id="main" class="container" role="main">
+    <section class="panel" aria-labelledby="sec-upload-title">
+      <h2 id="sec-upload-title">Carregar dados</h2>
+      <div class="row" role="group" aria-label="Entrada de arquivo e demo">
+        <label class="file-label">
+          <span>Selecione o CSV (mesmo formato do seu arquivo)</span>
+          <input type="file" id="fileInput" accept=".csv" aria-describedby="uploadHelp" />
+        </label>
+        <button id="demoBtn" class="secondary" title="Carrega um exemplo mínimo para testar a interface">Usar demo</button>
+      </div>
+      <div id="uploadHelp" class="hint">Volume: <code>Qual o volume de pedidos mensal da sua empresa?</code>. Outcomes: <code>Importância - ...</code> e <code>Satisfação - ...</code> (aceita <code>Satistação - ...</code>).</div>
+      <div id="feedback" class="alert info" role="status" aria-live="polite" hidden></div>
+    </section>
+
+    <section class="panel" aria-labelledby="sec-filters-title">
+      <h2 id="sec-filters-title">Filtros</h2>
+      <div class="filters" role="group" aria-label="Filtros de dados">
+        <div class="filter">
+          <label for="volumeSelect">Qual o volume de pedidos mensal da sua empresa?</label>
+          <select id="volumeSelect"><option value="__ALL__">Todos</option></select>
+        </div>
+        <div class="filter">
+          <label for="canalSelect">Como a sua empresa realiza vendas atualmente?</label>
+          <select id="canalSelect"><option value="__ALL__">Todos</option></select>
+        </div>
+        <div class="filter">
+          <label for="outcomeSearch">Outcome (busca por texto)</label>
+          <input id="outcomeSearch" type="text" placeholder="Ex.: Minimizar erros..." autocomplete="off" inputmode="search">
+        </div>
+        <div class="filter inline">
+          <label class="checkbox"><input type="checkbox" id="scale510" aria-describedby="scaleHelp"> Escala 5–10</label>
+          <button id="resetBtn" class="secondary">Limpar filtros</button>
+        </div>
+        <div id="scaleHelp" class="hint">Quando ativo, valores abaixo de 5 são ancorados em 5 para visualização.</div>
+      </div>
+      <div class="statusbar" role="status" aria-live="polite">
+        <span id="statusCount">0 respostas filtradas</span>
+        <span id="statusNote" class="muted"></span>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="sec-chart-title">
+      <h2 id="sec-chart-title">Mapa de Outcomes</h2>
+      <div class="legend" aria-hidden="true">
+        <span class="badge over">OVER-SERVED (acima de y=x)</span>
+        <span class="badge ok">APPROPRIATELY-SERVED</span>
+        <span class="badge under">UNDER-SERVED (abaixo de y=2x−10)</span>
+      </div>
+      <p id="chartDesc" class="hint">Eixo X: Importância média (0–10). Eixo Y: Satisfação média (0–10). Linhas guias: y=x (paridade) e y=2x−10 (underserved, inicia em x=5).</p>
+      <div id="chart" class="chart" role="img" aria-label="Dispersão de outcomes por importância e satisfação" aria-describedby="chartDesc"></div>
+      <div id="loading" class="hint" hidden>Carregando…</div>
+      <div id="empty" class="hint" hidden>Nenhum dado encontrado com os filtros atuais.</div>
+    </section>
+
+    <section class="panel" aria-labelledby="sec-table-title">
+      <div class="row space-between">
+        <h2 id="sec-table-title">Outcomes, Opportunity Score e Segmento</h2>
+        <div><button id="exportBtn" aria-label="Exportar resultados como CSV">Exportar CSV</button></div>
+      </div>
+      <div class="table-wrapper">
+        <table id="resultsTable" aria-describedby="tableHelp">
+          <thead>
+            <tr>
+              <th scope="col" role="columnheader" data-key="outcome" aria-sort="none">Outcome</th>
+              <th scope="col" role="columnheader" data-key="importancia" aria-sort="none">Importância</th>
+              <th scope="col" role="columnheader" data-key="satisfacao" aria-sort="none">Satisfação</th>
+              <th scope="col" role="columnheader" data-key="os" aria-sort="descending">Opportunity_Score</th>
+              <th scope="col" role="columnheader" data-key="segment" aria-sort="none">Segment</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p id="tableHelp" class="hint">Clique nos cabeçalhos para ordenar. OS = 2×Importância − Satisfação.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer" role="contentinfo">
+    <small>Baseado no conceito ODI. Layout e boas práticas inspirados em <a href="https://developer.apple.com/design/human-interface-guidelines" target="_blank" rel="noopener noreferrer">Human Interface Guidelines</a>.</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
